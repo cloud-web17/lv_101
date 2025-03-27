@@ -14,7 +14,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 100vh;
             overflow: hidden;
             position: relative;
@@ -23,19 +23,21 @@
             color: black;
             position: absolute;
             top: 10px;
+            left: 10px;
             font-size: 30px;
             z-index: 2;
         }
         .video-container {
             position: relative;
             width: 90vw;
-            max-width: 900px;
-            max-height: 500px;
+            max-width: 1000px;
+            max-height: 600px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: black;
             border-radius: 10px;
+            margin-top: 80px;
         }
         video {
             width: 100%;
@@ -51,15 +53,15 @@
             background: rgba(0, 0, 0, 0.5);
             padding: 5px 10px;
             border-radius: 5px;
-            font-size: 20pxpx;
+            font-size: 20px;
             font-weight: bold;
-            z-index: 9999; /* Ensures watermark stays on top */
+            z-index: 9999;
             pointer-events: none;
         }
         .notice-btn {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background: black;
             color: white;
             border: none;
@@ -88,17 +90,16 @@
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
-        
         }
     </style>
 </head>
 <body>
     <h1>Livestream_101</h1>
+    <button class="notice-btn" onclick="showNotice()">Notice</button>
     <div class="video-container" id="video-container">
         <video id="video" controls autoplay></video>
         <div class="watermark" id="watermark">LIVESTREAM101</div>
     </div>
-    <button class="notice-btn" onclick="showNotice()">Notice</button>
     <div class="notice-popup" id="notice-popup">
         <p>NOTICE</p>
         <p>If you experience any issues with playback, please try refreshing the page or clicking the pause/play button twice to reset the stream.</p>
@@ -146,6 +147,5 @@
         }
         loadVideo();
     </script>
-
 </body>
 </html>
