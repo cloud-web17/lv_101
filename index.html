@@ -83,7 +83,7 @@
             border-radius: 10px;
             text-align: center;
             width: 90vw;
-            max-width: 400px;
+            max-width: 850px;
             max-height: 60vh;
             overflow-y: auto;
         }
@@ -106,6 +106,27 @@
             border-radius: 50%;
             display: none;
         }
+         .schedule-container {
+        width: 90vw;
+        max-width: 800px;
+        background: black;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 14px;
+        text-align: center;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+    .schedule-item {
+        margin: 5px 0;
+        padding: 5px;
+        border-bottom: 1px solid gray;
+    }
+    .new-schedule {
+        animation: fadeIn 1s ease-in-out;
+    }
     </style>
 </head>
 <body>
@@ -117,20 +138,26 @@
         <div class="watermark" id="watermark">LIVESTREAM101</div>
     </div>
     <div class="notice-popup" id="notice-popup">
-        <p><b>NOTICE</b></p>
+        <h2<p><b>NOTICE</b></p></h2>
         <p>If you experience any issues with playback, please try refreshing the page to reset the stream.</p>
         <p>For the best experience, we recommend using a stable internet connection and the latest version of your browser.</p>
         <p><b>DON'T RE-STREAM ON OTHER PLATFORM</b></p>
-        <p><b>Friday, March 28th,</b><br>
-        - BTS WORLD TOUR 'LOVE YOURSELF' SEOUL | 7:00am - 9:50am<br>
-        - SEVENTEEN CONCERT ＜POWER OF LOVE＞ JAPAN EDITION |  2:30pm - 4:40pm<br>
-        - SEVENTEEN WORLD TOUR [BE THE SUN] - JAPAN Tokyo Dome | 5:00pm - 8:30pm<br>
-        - SEVENTEEN 2023 JAPAN FANMEETING 'LOVE' Tokyo Dome | 8:30pm - 11:40pm</p>
-        <p><b>NOW PLAYING</b><br>
-        - BTS WORLD TOUR 'LOVE YOURSELF' SEOUL<br> </p>
+       
+        
+    
+    <div class="schedule-container" id="schedule-container">
+    <h3>📅 Live Schedule</h3>
+    <p>Friday, March 28th,</p>
+    <div id="schedule-list">
+        <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' SEOUL | 7:00 AM - 9:50 AM</p>
+        <p class="schedule-item">SEVENTEEN CONCERT ＜POWER OF LOVE＞ JAPAN EDITION | 2:30 PM - 4:40 PM</p>
+        <p class="schedule-item">SEVENTEEN WORLD TOUR [BE THE SUN] - JAPAN Tokyo Dome | 5:00pm - 8:30pm</p>
+        <p class="schedule-item">SEVENTEEN 2023 JAPAN FANMEETING 'LOVE' Tokyo Dome | 8:30pm - 11:40pm</p>
+    </div>
+</div>
 
         <button class="close-btn" onclick="closeNotice()">Close</button>
-    </div>
+   
 
     <script>
         function showNotice() {
@@ -174,6 +201,39 @@
             }
         }
         loadVideo();
+      function showPopup(message) {
+        const popup = document.getElementById('popup-notification');
+        document.getElementById('popup-message').innerText = message;
+        popup.style.display = 'block';
+
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 5000);
+    }
+
+    function updateSchedule() {
+        // Simulating a real-time schedule update
+        const schedules = [
+            "BTS WORLD TOUR 'LOVE YOURSELF' SEOUL | 7:00 AM - 9:50 AM",
+            "SEVENTEEN CONCERT ＜POWER OF LOVE＞ JAPAN EDITION | 2:30 PM - 4:40 PM", 
+            "SEVENTEEN WORLD TOUR [BE THE SUN] - JAPAN Tokyo Dome | 5:00pm - 8:30pm",
+        ];
+        
+        const hasNewSchedule = Math.random() < 0.3; // 30% chance of new schedule
+        const newSchedule = schedules[Math.floor(Math.random() * schedules.length)];
+
+        if (hasNewSchedule) {
+            const scheduleList = document.getElementById('schedule-list');
+            const scheduleItem = document.createElement('p');
+            scheduleItem.classList.add('schedule-item', 'new-schedule');
+            scheduleItem.innerText = newSchedule;
+
+            scheduleList.appendChild(scheduleItem);
+            showPopup("📅 New Live Event Added: " + newSchedule);
+        }
+    }
+
+    setInterval(updateSchedule, 10000); // Check every 10 seconds
     </script>
 </body>
 </html>
