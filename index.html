@@ -84,6 +84,8 @@
             text-align: center;
             width: 90vw;
             max-width: 400px;
+            max-height: 60vh;
+            overflow-y: auto;
         }
         .close-btn {
             margin-top: 10px;
@@ -94,18 +96,22 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .notification {
+            position: absolute;
+            top: 23px;
+            right: 6px;
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+            display: none;
+        }
     </style>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TP4FX728');</script>
-<!-- End Google Tag Manager -->
 </head>
 <body>
     <h1>Livestream_101</h1>
     <button class="notice-btn" onclick="showNotice()">Notice</button>
+    <div class="notification" id="notification-dot"></div>
     <div class="video-container" id="video-container">
         <video id="video" controls autoplay></video>
         <div class="watermark" id="watermark">LIVESTREAM101</div>
@@ -115,22 +121,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <p>If you experience any issues with playback, please try refreshing the page to reset the stream.</p>
         <p>For the best experience, we recommend using a stable internet connection and the latest version of your browser.</p>
         <p><b>DON'T RE-STREAM ON OTHER PLATFORM</b></p>
-        <p>Friday, March 28th,</p>
-    <p>- BTS WORLD TOUR 'LOVE YOURSELF' SEOUL | 7:00am - 9:50am</p>
-    <p>- SEVENTEEN CONCERT ＜POWER OF LOVE＞ JAPAN EDITION |  2:30pm - 4:40pm</p>
-    <p>- SEVENTEEN WORLD TOUR [BE THE SUN] - JAPAN Tokyo Dome | 5:00pm - 8:30pm</p>
-    <p>- SEVENTEEN 2023 JAPAN FANMEETING 'LOVE' Tokyo Dome | 8:30pm - 11:40pm</p>
-    
+        <p>Friday, March 28th,<br>
+        - BTS WORLD TOUR 'LOVE YOURSELF' SEOUL | 7:00am - 9:50am<br>
+        - SEVENTEEN CONCERT ＜POWER OF LOVE＞ JAPAN EDITION |  2:30pm - 4:40pm<br>
+        - SEVENTEEN WORLD TOUR [BE THE SUN] - JAPAN Tokyo Dome | 5:00pm - 8:30pm<br>
+        - SEVENTEEN 2023 JAPAN FANMEETING 'LOVE' Tokyo Dome | 8:30pm - 11:40pm</p>
         <button class="close-btn" onclick="closeNotice()">Close</button>
     </div>
 
     <script>
         function showNotice() {
             document.getElementById('notice-popup').style.display = 'block';
+            document.getElementById('notification-dot').style.display = 'none';
         }
         function closeNotice() {
             document.getElementById('notice-popup').style.display = 'none';
         }
+        window.onload = function() {
+            document.getElementById('notification-dot').style.display = 'block';
+        };
 
         const video = document.getElementById('video');
         const videoSrc = "https://luong.utako.moe/tbsch1/index.m3u8";
@@ -163,10 +172,5 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
         loadVideo();
     </script>
-<!-- 100% privacy-first analytics -->
 </body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP4FX728"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 </html>
