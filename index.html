@@ -29,20 +29,20 @@
         }
         .video-container {
             position: relative;
-            width: 90vw;
-            max-width: 1000px;
-            max-height: 600px;
+            width: 95vw;
+            max-width: 900px;
+            height: auto;
             display: flex;
-            align-items: center;
+            
             justify-content: center;
             background: black;
             border-radius: 10px;
-            margin-top: 80px;
+            margin-top: 15vh;
         }
         video {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            object-fit: contain;
             border-radius: 10px;
         }
         .watermark {
@@ -53,7 +53,7 @@
             background: rgba(0, 0, 0, 0.5);
             padding: 5px 10px;
             border-radius: 5px;
-            font-size: 20px;
+            font-size: 14px;
             font-weight: bold;
             z-index: 9999;
             pointer-events: none;
@@ -65,9 +65,10 @@
             background: black;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 8px;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 14px;
         }
         .notice-popup {
             display: none;
@@ -78,9 +79,11 @@
             background: gray;
             backdrop-filter: blur(20px);
             color: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             text-align: center;
+            width: 90vw;
+            max-width: 400px;
         }
         .close-btn {
             margin-top: 10px;
@@ -104,7 +107,7 @@
         <p>NOTICE</p>
         <p>If you experience any issues with playback, please try refreshing the page or clicking the pause/play button twice to reset the stream.</p>
         <p>For the best experience, we recommend using a stable internet connection and the latest version of your browser.</p>
-       <p>DON'T RE-STREAM ON OTHER PLATFORM</p>
+        <p>DON'T RE-STREAM ON OTHER PLATFORM</p>
         <button class="close-btn" onclick="closeNotice()">Close</button>
     </div>
 
