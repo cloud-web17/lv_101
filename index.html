@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livestream_101</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <link rel="icon" href="path-to-favicon.ico" type="image/x-icon">
     <style>
         body {
             margin: 0;
@@ -124,11 +123,11 @@
     <button class="notice-btn" onclick="showNotice()">Notice</button>
     <div class="notification" id="notification-dot"></div>
     <div class="video-container" id="video-container">
-        <video id="video" controls autoplay muted></video>
+        <video id="video" controls autoplay muted playsinline></video>
         <div class="watermark" id="watermark">LIVESTREAM101</div>
     </div>
     <div class="notice-popup" id="notice-popup">
-        <b>NOTICE</b>
+        <h1><b>NOTICE</b></h1>
         <p>If you experience any issues with playback, please try refreshing the page to reset the stream.</p>
         <p>For the best experience, we recommend using a stable internet connection and the latest version of your browser.</p>
         <p><b>=====DON'T RE-STREAM ON OTHER PLATFORM=====</b></p>
@@ -136,18 +135,12 @@
             <h3>📅 Live Schedule</h3>
             <p>Saturday, March 29th,</p>
             <div id="schedule-list">
-        <p class="schedule-item">BTS Dome concert broadcast Documentary | 3:30am - 4:10am</p>
-        <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' 〜JAPAN EDITION〜 at Tokyo Dome | 4:10am - 7:00am</p>
-        <p class="schedule-item">BTS Stadium Concert Documentary | 7:00am - 7:40am</p>
-        <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF: SPEAK YOURSELF'〜JAPAN EDITION〜 | 7:40am - 10:30am</p>
-        <p class="schedule-item">ENHYPEN WORLD TOUR 'FATE' IN JAPAN Tokyo Dome | 10:30am - 1:40pm</p>
-        <p class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN Close-up documentary & exclusive interview |  2:00pm - 2:30pm</p>
-        <p class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN | 2:30pm - 5:40pm</p>
-        <p class="schedule-item">ENHYPEN WORLD TOUR 'WALK THE LINE' IN JAPAN Kyocera Dome Osaka | 6:00pm - 8:50pm</p>
-        <p class="schedule-item">2016 'LIKE SEVENTEEN - Shining Diamond' in Japan CONCERT | 2:30am - 4:15am</p>
+                <p class="schedule-item">BTS Dome concert broadcast Documentary | 3:30am - 4:10am</p>
+                <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' 〜JAPAN EDITION〜 at Tokyo Dome | 4:10am - 7:00am</p>
+                <p class="schedule-item">BTS Stadium Concert Documentary | 7:00am - 7:40am</p>
+                <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF: SPEAK YOURSELF'〜JAPAN EDITION〜 | 7:40am - 10:30am</p>
             </div>
         </div>
-        
         <button class="close-btn" onclick="closeNotice()">Close</button>
     </div>
     <script>
@@ -170,13 +163,8 @@
                 const hls = new Hls();
                 hls.loadSource(videoSrc);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.ERROR, function(event, data) {
-                    console.error("HLS.js error:", data);
-                });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = videoSrc;
-            } else {
-                console.error("HLS is not supported in this browser.");
             }
         }
         loadVideo();
