@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livestream_101</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link rel="icon" href="path-to-favicon.ico" type="image/x-icon">
     <style>
         body {
             margin: 0;
@@ -53,14 +54,14 @@
             background: rgba(0, 0, 0, 0.5);
             padding: 5px 10px;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 18px;
             font-weight: bold;
             z-index: 9999;
             pointer-events: none;
         }
         .notice-btn {
             position: absolute;
-            top: 27px;
+            top: 28px;
             right: 10px;
             background: black;
             color: white;
@@ -69,6 +70,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
+            
         }
         .notice-popup {
             display: none;
@@ -83,9 +85,10 @@
             border-radius: 10px;
             text-align: center;
             width: 90vw;
-            max-width: 850px;
+            max-width: 730px;
             max-height: 60vh;
             overflow-y: auto;
+            align-items: center;
         }
         .close-btn {
             margin-top: 10px;
@@ -108,7 +111,7 @@
         }
          .schedule-container {
         width: 90vw;
-        max-width: 800px;
+        max-width: 700px;
         background: black;
         color: white;
         padding: 15px;
@@ -118,6 +121,7 @@
         text-align: center;
         max-height: 250px;
         overflow-y: auto;
+        justify-content: flex-start;
     }
     .schedule-item {
         margin: 5px 0;
@@ -138,22 +142,26 @@
         <div class="watermark" id="watermark">LIVESTREAM101</div>
     </div>
     <div class="notice-popup" id="notice-popup">
-        <h2<p><b>NOTICE</b></p></h2>
+        <h1<p></p><b>NOTICE</b></p></h1>
         <p>If you experience any issues with playback, please try refreshing the page to reset the stream.</p>
         <p>For the best experience, we recommend using a stable internet connection and the latest version of your browser.</p>
-        <p><b>DON'T RE-STREAM ON OTHER PLATFORM</b></p>
+        <p><b>=====DON'T RE-STREAM ON OTHER PLATFORM=====</b></p>
        
         
     
     <div class="schedule-container" id="schedule-container">
     <h3>📅 Live Schedule</h3>
-    <p>Friday, March 28th,</p>
+    <p>Saturday, March 29th,</p>
     <div id="schedule-list">
-        <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' SEOUL | 7:00 AM - 9:50 AM</p>
-        <p class="schedule-item">SEVENTEEN CONCERT ＜POWER OF LOVE＞ JAPAN EDITION | 2:30 PM - 4:40 PM</p>
-        <p class="schedule-item">SEVENTEEN WORLD TOUR [BE THE SUN] - JAPAN Tokyo Dome | 5:00pm - 8:30pm</p>
-        <p class="schedule-item">SEVENTEEN 2023 JAPAN FANMEETING 'LOVE' Tokyo Dome | 8:30pm - 11:40pm</p>
-          <p class="schedule-item">SEVENTEEN 2023 JAPAN FANMEETING 'LOVE' Tokyo Dome | 8:30pm - 11:40pm</p>
+        <p class="schedule-item">BTS Dome concert broadcast Documentary | 3:30am - 4:10am</p>
+        <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' 〜JAPAN EDITION〜 at Tokyo Dome | 4:10am - 7:00am</p>
+        <p class="schedule-item">BTS Stadium Concert Documentary | 7:00am - 7:40am</p>
+        <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF: SPEAK YOURSELF'〜JAPAN EDITION〜 | 7:40am - 10:30am</p>
+        <p class="schedule-item">ENHYPEN WORLD TOUR 'FATE' IN JAPAN Tokyo Dome | 10:30am - 1:40pm</p>
+        <p class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN Close-up documentary & exclusive interview |  2:00pm - 2:30pm</p>
+        <p class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN | 2:30pm - 5:40pm</p>
+        <p class="schedule-item">ENHYPEN WORLD TOUR 'WALK THE LINE' IN JAPAN Kyocera Dome Osaka | 6:00pm - 8:50pm</p>
+        <p class="schedule-item">2016 'LIKE SEVENTEEN - Shining Diamond' in Japan CONCERT | 2:30am - 4:15am</p>
     </div>
 </div>
 
