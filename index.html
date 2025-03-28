@@ -70,7 +70,6 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            
         }
         .notice-popup {
             display: none;
@@ -99,38 +98,25 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .notification {
-            position: absolute;
-            top: 23px;
-            right: 6px;
-            width: 10px;
-            height: 10px;
-            background: red;
-            border-radius: 50%;
-            display: none;
+        .schedule-container {
+            width: 90vw;
+            max-width: 700px;
+            background: black;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+            max-height: 250px;
+            overflow-y: auto;
+            justify-content: flex-start;
         }
-         .schedule-container {
-        width: 90vw;
-        max-width: 700px;
-        background: black;
-        color: white;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 20px;
-        font-size: 14px;
-        text-align: center;
-        max-height: 250px;
-        overflow-y: auto;
-        justify-content: flex-start;
-    }
-    .schedule-item {
-        margin: 5px 0;
-        padding: 5px;
-        border-bottom: 1px solid gray;
-    }
-    .new-schedule {
-        animation: fadeIn 1s ease-in-out;
-    }
+        .schedule-item {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid gray;
+        }
     </style>
 </head>
 <body>
@@ -138,21 +124,18 @@
     <button class="notice-btn" onclick="showNotice()">Notice</button>
     <div class="notification" id="notification-dot"></div>
     <div class="video-container" id="video-container">
-        <video id="video" controls autoplay></video>
+        <video id="video" controls autoplay muted></video>
         <div class="watermark" id="watermark">LIVESTREAM101</div>
     </div>
     <div class="notice-popup" id="notice-popup">
-        <h1<p></p><b>NOTICE</b></p></h1>
+        <b>NOTICE</b>
         <p>If you experience any issues with playback, please try refreshing the page to reset the stream.</p>
         <p>For the best experience, we recommend using a stable internet connection and the latest version of your browser.</p>
         <p><b>=====DON'T RE-STREAM ON OTHER PLATFORM=====</b></p>
-       
-        
-    
-    <div class="schedule-container" id="schedule-container">
-    <h3>📅 Live Schedule</h3>
-    <p>Saturday, March 29th,</p>
-    <div id="schedule-list">
+        <div class="schedule-container" id="schedule-container">
+            <h3>📅 Live Schedule</h3>
+            <p>Saturday, March 29th,</p>
+            <div id="schedule-list">
         <p class="schedule-item">BTS Dome concert broadcast Documentary | 3:30am - 4:10am</p>
         <p class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' 〜JAPAN EDITION〜 at Tokyo Dome | 4:10am - 7:00am</p>
         <p class="schedule-item">BTS Stadium Concert Documentary | 7:00am - 7:40am</p>
@@ -162,12 +145,11 @@
         <p class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN | 2:30pm - 5:40pm</p>
         <p class="schedule-item">ENHYPEN WORLD TOUR 'WALK THE LINE' IN JAPAN Kyocera Dome Osaka | 6:00pm - 8:50pm</p>
         <p class="schedule-item">2016 'LIKE SEVENTEEN - Shining Diamond' in Japan CONCERT | 2:30am - 4:15am</p>
-    </div>
-</div>
-
+            </div>
+        </div>
+        
         <button class="close-btn" onclick="closeNotice()">Close</button>
-   
-
+    </div>
     <script>
         function showNotice() {
             document.getElementById('notice-popup').style.display = 'block';
@@ -180,28 +162,16 @@
             document.getElementById('notification-dot').style.display = 'block';
         };
 
-        const video = document.getElementById('video');
-        const videoSrc = "https://luong.utako.moe/tbsch1/index.m3u8";
-        
         function loadVideo() {
+            const video = document.getElementById('video');
+            const videoSrc = "https://luong.utako.moe/tbsch1/index.m3u8";
+
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(videoSrc);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.ERROR, (event, data) => {
-                    if (data.fatal) {
-                        switch (data.type) {
-                            case Hls.ErrorTypes.NETWORK_ERROR:
-                                console.log("A network error occurred");
-                                break;
-                            case Hls.ErrorTypes.MEDIA_ERROR:
-                                console.log("A media error occurred");
-                                break;
-                            default:
-                                console.log("An unknown error occurred");
-                                break;
-                        }
-                    }
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    console.error("HLS.js error:", data);
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = videoSrc;
@@ -210,42 +180,6 @@
             }
         }
         loadVideo();
-      function showPopup(message) {
-        const popup = document.getElementById('popup-notification');
-        document.getElementById('popup-message').innerText = message;
-        popup.style.display = 'block';
-
-        setTimeout(() => {
-            popup.style.display = 'none';
-        }, 5000);
-    }
-
-    function updateSchedule() {
-        // Simulating a real-time schedule update
-        const schedules = [
-            "NEW STREAM IS UP NOW!!",
-            "", 
-            "",
-        ];
-        
-        const hasNewSchedule = Math.random() < 0.3; // 30% chance of new schedule
-        const newSchedule = schedules[Math.floor(Math.random() * schedules.length)];
-
-        if (hasNewSchedule) {
-            const scheduleList = document.getElementById('schedule-list');
-            const scheduleItem = document.createElement('p');
-            scheduleItem.classList.add('schedule-item', 'new-schedule');
-            scheduleItem.innerText = newSchedule;
-
-            scheduleList.appendChild(scheduleItem);
-            showPopup("📅 New Live Event Added: " + newSchedule);
-        }
-    }
-
-    setInterval(updateSchedule, 10000); // Check every 10 seconds
-       
     </script>
- <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
 </body>
 </html>
