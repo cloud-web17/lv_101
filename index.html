@@ -2,53 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Livestream101</title>
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
             font-family: Arial, sans-serif;
-            background-color: #111;
+            background-color: #000;
             color: white;
+            overflow: hidden;
+            touch-action: manipulation;
         }
         
         header {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 15px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
+            z-index: 100;
         }
         
         .logo {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
-            color: #fff;
         }
         
         .notice-btn {
             background-color: #ff5722;
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
             cursor: pointer;
-            font-weight: bold;
         }
         
-        .notice-btn:hover {
-            background-color: #e64a19;
+        #video-container {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: black;
         }
         
-        .video-container {
-            margin-top: 60px;
+        video {
             width: 100%;
-            height: calc(100vh - 60px);
+            height: 100%;
+            object-fit: contain;
         }
         
         .modal {
@@ -59,37 +71,24 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
+            z-index: 200;
             justify-content: center;
             align-items: center;
         }
         
         .modal-content {
             background-color: #222;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 500px;
+            padding: 15px;
+            border-radius: 5px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+            max-width: 400px;
         }
         
         .close-btn {
             color: #aaa;
             float: right;
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 20px;
             cursor: pointer;
-        }
-        
-        .close-btn:hover {
-            color: white;
-        }
-        
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
         }
     </style>
 </head>
@@ -99,56 +98,54 @@
         <button class="notice-btn" id="noticeBtn">Notice</button>
     </header>
     
-    <div class="video-container">
-        <video id="video" controls autoplay></video>
+    <div id="video-container">
+        <video id="video" playsinline controls autoplay></video>
     </div>
     
     <div class="modal" id="noticeModal">
         <div class="modal-content">
             <span class="close-btn" id="closeModal">&times;</span>
-            <h2>Important Notice</h2>
-            <p>This is a streaming website. Please be aware of the following:</p>
-            <ul>
-                <li>The content is streamed directly from the provided URL</li>
-                <li>Ensure you have a stable internet connection for best quality</li>
-                <li>This player supports HLS streaming format</li>
-                <li>Volume can be adjusted using the player controls</li>
-                <li>For fullscreen mode, click the fullscreen icon in the player</li>
-           <h3>📅 Live Schedule</h3>
-            <p>Saturday, March 29th,</p>
-            <div id="schedule-list">
-        <li class="schedule-item">BTS Dome concert broadcast Documentary | 3:30am - 4:10am</li>
-        <li class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' 〜JAPAN EDITION〜 at Tokyo Dome | 4:10am - 7:00am</p>
-        <li class="schedule-item">BTS Stadium Concert Documentary | 7:00am - 7:40am</li>
-        <li class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF: SPEAK YOURSELF'〜JAPAN EDITION〜 | 7:40am - 10:30am</li>
-        <li class="schedule-item">ENHYPEN WORLD TOUR 'FATE' IN JAPAN Tokyo Dome | 10:30am - 1:40pm</li>
-        <li class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN Close-up documentary & exclusive interview |  2:00pm - 2:30pm</p>
-        <li class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN | 2:30pm - 5:40pm</li>
-        <li class="schedule-item">ENHYPEN WORLD TOUR 'WALK THE LINE' IN JAPAN Kyocera Dome Osaka | 6:00pm - 8:50pm</li>
-        <li class="schedule-item">2016 'LIKE SEVENTEEN - Shining Diamond' in Japan CONCERT | 2:30am - 4:15am</li>
+            <h3>Stream Notice</h3>
+            <p>For best experience:</p>
+            <ul style="margin: 10px 0 10px 20px;">
+                <li>Use Wi-Fi if possible</li>
+                <li>Rotate phone for fullscreen</li>
+                <li>Tap video for controls</li>
             </ul>
-            <p>If the stream doesn't load, please refresh the page or check your network connection.</li>
         </div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
-        // Video player setup
         const video = document.getElementById('video');
         const videoSrc = 'https://luong.utako.moe/tbsch1/index.m3u8';
         
-        if (Hls.isSupported()) {
+        // Try native HLS first (iOS Safari)
+        if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function() {
+                video.play().catch(e => {
+                    console.log('Autoplay prevented:', e);
+                    // Show controls so user can start playback
+                    video.controls = true;
+                });
+            });
+        } 
+        // Use HLS.js for other browsers
+        else if (Hls.isSupported()) {
             const hls = new Hls();
             hls.loadSource(videoSrc);
             hls.attachMedia(video);
             hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
+                video.play().catch(e => {
+                    console.log('Autoplay prevented:', e);
+                    video.controls = true;
+                });
             });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = videoSrc;
-            video.addEventListener('loadedmetadata', function() {
-                video.play();
-            });
+        }
+        // Fallback
+        else {
+            alert('Your browser doesn\'t support this stream format');
         }
         
         // Modal functionality
@@ -169,6 +166,16 @@
                 modal.style.display = 'none';
             }
         }
+        
+        // Handle fullscreen on orientation change
+        function resizeVideo() {
+            const container = document.getElementById('video-container');
+            container.style.height = (window.innerHeight - 40) + 'px';
+        }
+        
+        window.addEventListener('resize', resizeVideo);
+        window.addEventListener('orientationchange', resizeVideo);
+        resizeVideo();
     </script>
 </body>
 </html>
