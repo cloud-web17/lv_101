@@ -2,109 +2,172 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Livestream_101</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestream101</title>
     <style>
-        body { margin:0; padding:0; background:#000; }
-        .video-container {
-            position: relative;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: white;
+        }
+        
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
             width: 100%;
-            height: 100vh;
+            top: 0;
+            z-index: 1000;
         }
-        #videoPlayer {
-            width:100%;
-            height:100%;
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
         }
-        #playBtn { 
-            position:fixed; top:50%; left:50%; 
-            transform:translate(-50%,-50%); 
-            padding:15px 30px; font-size:20px;
-            background:#f00; color:#fff; border:none;
-            border-radius:5px; display:none;
-            z-index:10;
+        
+        .notice-btn {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
         }
-        .watermark {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            color: rgba(255,255,255,0.7);
-            font-size: 16px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            z-index: 5;
-            pointer-events: none;
-            background: rgba(0,0,0,0.3);
-            padding: 5px 10px;
-            border-radius: 5px;
+        
+        .notice-btn:hover {
+            background-color: #e64a19;
         }
-        /* For image watermark */
-        .img-watermark {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            opacity: 0.7;
-            z-index: 5;
-            pointer-events: none;
-            max-width: 100px;
-            max-height: 50px;
+        
+        .video-container {
+            margin-top: 60px;
+            width: 100%;
+            height: calc(100vh - 60px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-btn:hover {
+            color: white;
+        }
+        
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="logo">Livestream101</div>
+        <button class="notice-btn" id="noticeBtn">Notice</button>
+    </header>
+    
     <div class="video-container">
-        <video id="videoPlayer" controls playsinline webkit-playsinline></video>
-        <!-- Text watermark -->
-        <div class="watermark">LIVESTREAM101</div>
-        <!-- OR Image watermark (uncomment to use) -->
-        <!--
-        <img class="img-watermark" src="your-logo.png" alt="Watermark">
-        -->
-        <button id="playBtn">TAP TO PLAY</button>
+        <video id="video" controls autoplay></video>
     </div>
-
+    
+    <div class="modal" id="noticeModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2>Important Notice</h2>
+            <p>This is a streaming website. Please be aware of the following:</p>
+            <ul>
+                <li>The content is streamed directly from the provided URL</li>
+                <li>Ensure you have a stable internet connection for best quality</li>
+                <li>This player supports HLS streaming format</li>
+                <li>Volume can be adjusted using the player controls</li>
+                <li>For fullscreen mode, click the fullscreen icon in the player</li>
+           <h3>📅 Live Schedule</h3>
+            <p>Saturday, March 29th,</p>
+            <div id="schedule-list">
+        <li class="schedule-item">BTS Dome concert broadcast Documentary | 3:30am - 4:10am</li>
+        <li class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF' 〜JAPAN EDITION〜 at Tokyo Dome | 4:10am - 7:00am</p>
+        <li class="schedule-item">BTS Stadium Concert Documentary | 7:00am - 7:40am</li>
+        <li class="schedule-item">BTS WORLD TOUR 'LOVE YOURSELF: SPEAK YOURSELF'〜JAPAN EDITION〜 | 7:40am - 10:30am</li>
+        <li class="schedule-item">ENHYPEN WORLD TOUR 'FATE' IN JAPAN Tokyo Dome | 10:30am - 1:40pm</li>
+        <li class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN Close-up documentary & exclusive interview |  2:00pm - 2:30pm</p>
+        <li class="schedule-item">ENHYPEN WORLD TOUR 'FATE PLUS' IN JAPAN | 2:30pm - 5:40pm</li>
+        <li class="schedule-item">ENHYPEN WORLD TOUR 'WALK THE LINE' IN JAPAN Kyocera Dome Osaka | 6:00pm - 8:50pm</li>
+        <li class="schedule-item">2016 'LIKE SEVENTEEN - Shining Diamond' in Japan CONCERT | 2:30am - 4:15am</li>
+            </ul>
+            <p>If the stream doesn't load, please refresh the page or check your network connection.</li>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
-        const video = document.getElementById('videoPlayer');
-        const playBtn = document.getElementById('playBtn');
-        const streamUrl = "https://luong.utako.moe/tbsch1/index.m3u8";
-
-        function initPlayer() {
-            if (Hls.isSupported()) {
-                const hls = new Hls({
-                    enableWorker: false,
-                    lowLatencyMode: true
-                });
-                hls.loadSource(streamUrl);
-                hls.attachMedia(video);
-                
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    playBtn.style.display = 'block';
-                });
-                
-                hls.on(Hls.Events.ERROR, function(event, data) {
-                    if (data.fatal) {
-                        alert("Stream Error: " + data.details);
-                    }
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = streamUrl;
-                playBtn.style.display = 'block';
-            } else {
-                alert("Your device doesn't support HLS streaming");
-            }
+        // Video player setup
+        const video = document.getElementById('video');
+        const videoSrc = 'https://luong.utako.moe/tbsch1/index.m3u8';
+        
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
         }
-
-        playBtn.addEventListener('click', function() {
-            video.play()
-                .then(() => playBtn.style.display = 'none')
-                .catch(e => alert("Could not play: " + e.message));
-        });
-
-        // Start loading when page is ready
-        if (document.readyState === 'complete') {
-            initPlayer();
-        } else {
-            window.addEventListener('load', initPlayer);
+        
+        // Modal functionality
+        const modal = document.getElementById('noticeModal');
+        const btn = document.getElementById('noticeBtn');
+        const span = document.getElementById('closeModal');
+        
+        btn.onclick = function() {
+            modal.style.display = 'flex';
+        }
+        
+        span.onclick = function() {
+            modal.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
         }
     </script>
 </body>
