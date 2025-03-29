@@ -11,7 +11,6 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-        
         body {
             font-family: Arial, sans-serif;
             background-color: #000;
@@ -19,7 +18,6 @@
             overflow: hidden;
             touch-action: manipulation;
         }
-        
         header {
             position: fixed;
             top: 0;
@@ -32,12 +30,10 @@
             align-items: center;
             z-index: 100;
         }
-        
         .logo {
             font-size: 18px;
             font-weight: bold;
         }
-        
         .notice-btn {
             background-color: #ff5722;
             color: white;
@@ -47,7 +43,6 @@
             font-size: 12px;
             cursor: pointer;
         }
-        
         #video-container {
             position: fixed;
             top: 40px;
@@ -55,14 +50,15 @@
             right: 0;
             bottom: 0;
             background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        
         video {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-        
         .modal {
             display: none;
             position: fixed;
@@ -75,7 +71,6 @@
             justify-content: center;
             align-items: center;
         }
-        
         .modal-content {
             background-color: #222;
             padding: 15px;
@@ -83,12 +78,21 @@
             width: 90%;
             max-width: 400px;
         }
-        
         .close-btn {
             color: #aaa;
             float: right;
             font-size: 20px;
             cursor: pointer;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #ff4444;
+        }
+        .loading {
+            color: white;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -99,6 +103,17 @@
     </header>
     
     <div id="video-container">
+        <div class="loading" id="loading">Loading stream...</div>
+        <div class="error-message" id="errorMessage">
+            <h3>Stream Error</h3>
+            <p>Could not load the video stream. Please try:</p>
+            <ul style="margin: 10px 0; text-align: left;">
+                <li>Refreshing the page</li>
+                <li>Using Chrome or Safari browser</li>
+                <li>Checking your internet connection</li>
+            </ul>
+            <button onclick="window.location.reload()" style="padding: 8px 15px; background: #ff5722; color: white; border: none; border-radius: 3px; margin-top: 10px;">Retry</button>
+        </div>
         <video id="video" playsinline controls autoplay></video>
     </div>
     
@@ -108,44 +123,80 @@
             <h3>Stream Notice</h3>
             <p>For best experience:</p>
             <ul style="margin: 10px 0 10px 20px;">
-                <li>Use Wi-Fi if possible</li>
-                <li>Rotate phone for fullscreen</li>
-                <li>Tap video for controls</li>
+                <li>Use Wi-Fi connection</li>
+                <li>Rotate phone to landscape for fullscreen</li>
+                <li>Tap the video to show controls</li>
+                <li>Try different browsers if having issues</li>
             </ul>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
     <script>
+        // Main video player setup
         const video = document.getElementById('video');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
         const videoSrc = 'https://luong.utako.moe/tbsch1/index.m3u8';
         
-        // Try native HLS first (iOS Safari)
-        if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = videoSrc;
-            video.addEventListener('loadedmetadata', function() {
-                video.play().catch(e => {
-                    console.log('Autoplay prevented:', e);
-                    // Show controls so user can start playback
-                    video.controls = true;
-                });
-            });
-        } 
-        // Use HLS.js for other browsers
-        else if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(videoSrc);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play().catch(e => {
-                    console.log('Autoplay prevented:', e);
-                    video.controls = true;
-                });
-            });
+        // Detect mobile devices
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        function showError() {
+            loading.style.display = 'none';
+            errorMessage.style.display = 'block';
+            video.style.display = 'none';
         }
-        // Fallback
-        else {
-            alert('Your browser doesn\'t support this stream format');
+        
+        function loadStream() {
+            // Try native HLS first (for iOS Safari)
+            if (video.canPlayType('application/vnd.apple.mpegurl') && isMobile) {
+                video.src = videoSrc;
+                video.addEventListener('loadedmetadata', function() {
+                    loading.style.display = 'none';
+                    video.play().catch(e => {
+                        console.log('Autoplay prevented, showing controls');
+                        video.controls = true;
+                    });
+                });
+                video.addEventListener('error', showError);
+            } 
+            // Try HLS.js for other browsers
+            else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                const hls = new Hls({
+                    enableWorker: false, // Better for mobile
+                    lowLatencyMode: true,
+                    backBufferLength: 30
+                });
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    loading.style.display = 'none';
+                    video.play().catch(e => {
+                        console.log('Autoplay prevented, showing controls');
+                        video.controls = true;
+                    });
+                });
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        showError();
+                    }
+                });
+            }
+            // Final fallback
+            else {
+                showError();
+            }
+        }
+        
+        // Load HLS.js dynamically if needed
+        if (!video.canPlayType('application/vnd.apple.mpegurl') || !isMobile) {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
+            script.onload = loadStream;
+            script.onerror = showError;
+            document.head.appendChild(script);
+        } else {
+            loadStream();
         }
         
         // Modal functionality
@@ -156,25 +207,24 @@
         btn.onclick = function() {
             modal.style.display = 'flex';
         }
-        
         span.onclick = function() {
             modal.style.display = 'none';
         }
-        
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
         }
         
-        // Handle fullscreen on orientation change
+        // Handle orientation/resize changes
         function resizeVideo() {
             const container = document.getElementById('video-container');
             container.style.height = (window.innerHeight - 40) + 'px';
         }
-        
         window.addEventListener('resize', resizeVideo);
-        window.addEventListener('orientationchange', resizeVideo);
+        window.addEventListener('orientationchange', function() {
+            setTimeout(resizeVideo, 200);
+        });
         resizeVideo();
     </script>
 </body>
